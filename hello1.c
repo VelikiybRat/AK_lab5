@@ -1,3 +1,4 @@
+#define DEBUG
 // SPDX-License-Identifier: GPL-2.0
 /*
  * hello1: keeps the list of timestamps and exports print_hello().
@@ -51,12 +52,14 @@ static void __exit hello1_exit(void)
 {
 	struct hello_event *ev, *tmp;
 
+	pr_debug("hello1: exit started\n");
 	list_for_each_entry_safe(ev, tmp, &hello_list, list) {
-		pr_info("hello1: print took %lld ns\n",
-			ktime_to_ns(ev->duration));
+		pr_debug("hello1: print took %lld ns\n",
+			 ktime_to_ns(ev->duration));
 		list_del(&ev->list);
 		kfree(ev);
 	}
+	pr_debug("hello1: exit finished\n");
 	pr_info("hello1: unloaded\n");
 }
 
